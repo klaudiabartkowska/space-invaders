@@ -4,8 +4,7 @@
 } 
 
 body{
-  background: url("./img/pexels-adrien-olichon-3709430.jpg");
-  /* background-size: cover; */
+  background-color: black;
 }
 
 #container {
