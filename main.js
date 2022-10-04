@@ -2,31 +2,23 @@
 
 let spaceship = document.getElementById('spaceship')
 
-let spaceshipVelocity = 1; // it's an int 
+const spaceshipVelocity = 15; // it's an int 
 
-let delta = 0; 
+let container = document.getElementById('container')
+
+let playArea = container.getBoundingClientRect().width/2
+
+let middleOfSpaceShip = spaceship.getBoundingClientRect().width/2 
+
+let limit = container.getBoundingClientRect().width *0.2
 
 
-let lastFrameTimeMs = 0;
 
-let timeStamp = 1000/60;
+let started = false
+let pause = false 
+let restart = false 
 
-let maxFPS = 10; 
-
- let container = document.getElementById('container')
-
- let playArea = container.getBoundingClientRect().width/2
-
- let widthOfSpaceship = spaceship.getBoundingClientRect().width/2 
-
- let limit = container.getBoundingClientRect().width *0.2
 //  console.log(margin)
-
-
-// document.addEventListener("keydown", this.keydown);
-// document.addEventListener("keyup", this.keyup);
-
-
 
 //let enemy = document.createElement('div')
 
@@ -37,91 +29,76 @@ let maxFPS = 10;
  //container.append(aliens)             
      
 //  console.log(container.getBoundingClientRect().width);
-//  console.log(spaceship.getBoundingClientRect().width);
+//  console.log(spaceship.getBoundingClientRect().x);
+//  console.log(middleOfSpaceShip);
 
   window.addEventListener('load', () =>{
     spaceship.style.position ='absolute'       
-    spaceship.style.left = (playArea - widthOfSpaceship )+'px';    // center the Spaceship 
-  
-
-  });
-  
-  function movePlayer(delta){
-  
-    spaceship.position  += spaceshipVelocity * delta;
-    
-    document.addEventListener('keydown', (e) => {
-
-    
-    // console.log('spaceship',spaceship.getBoundingClientRect());
-    // console.log('container',container.getBoundingClientRect());
-    
-      switch (e.key){
-        case 'ArrowLeft': 
-     // console.log('test left', parseInt(spaceship.style.left))
-      if (spaceship.getBoundingClientRect().left > limit){
-        spaceship.style.left = parseInt(spaceship.style.left) - spaceshipVelocity +'px';
-      } 
-      break;
-      case 'ArrowRight':
-       // console.log('test right');
-        // console.log(spaceship.getBoundingClientRect().right >container.getBoundingClientRect().width )
-        if (spaceship.getBoundingClientRect().right < container.getBoundingClientRect().width - limit){
-          spaceship.style.left = parseInt(spaceship.style.left) + spaceshipVelocity +'px'
-        }
-        break;
-    }
+    spaceship.style.left = (playArea - middleOfSpaceShip )+'px';    // center the Spaceship 
   })
 
-  // document.addEventListener('keyup', (e) => {
 
-  //   if (e.key === x){
+  function movePlayer(key){
+    
+  console.log('spaceship left: ',spaceship.getBoundingClientRect().left);
+  console.log('spaceship right: ',spaceship.getBoundingClientRect().right);
+  
+  // console.log('container',container.getBoundingClientRect().x);
+  // console.log('container',container.getBoundingClientRect().y);
 
-  //   }
-
-  // })
-};
-
-function panic() {
-  delta = 0; // discard the unsimulated time
-  // ... snap the player to the authoritative state
+  switch (key){
+      case 'ArrowLeft': 
+    // console.log('test left', parseInt(spaceship.style.left))
+    if (spaceship.getBoundingClientRect().left > limit){
+      spaceship.style.left = parseInt(spaceship.style.left) - spaceshipVelocity +'px';
+    } 
+    break;
+    case 'ArrowRight':
+      // console.log('test right');
+      // console.log(spaceship.getBoundingClientRect().right >container.getBoundingClientRect().width )
+      if (spaceship.getBoundingClientRect().right < container.getBoundingClientRect().width - limit){
+        spaceship.style.left = parseInt(spaceship.style.left) + spaceshipVelocity +'px'
+      }
+      break;
+  }
 }
 
+function shootBullet(key){
+  console.log('space ');
+  let bullet = document.createElement("IMG");
+  console.log(bullet);
 
-let fps = 60,
-    framesThisSecond = 0,
-    lastFpsUpdate = 0;
+}
+
  
 
+  document.addEventListener('keydown', e =>{
+    switch(e.key){
+      case 's': 
+        started = true; 
+      case 'p': 
+        pause = true;
+      case 'r':
+        restart = true;
+      case " ":
+       shootBullet(e.key);
+      case 'ArrowLeft':
+        movePlayer(e.key)
+        break;
+      case 'ArrowRight':
+        movePlayer(e.key)
+        break;
+   }
+  })
 
-function gameLoop(timeStamp){
-  if (timeStamp < lastFrameTimeMs + (1000 / maxFPS)) {
-    requestAnimationFrame(gameLoop);
-    return;
+  
+    function gameLoop(){
+    // shootBullet();
+
+    requestAnimationFrame(gameLoop)
   }
-
-  delta - timeStamp - lastFrameTimeMs;
-  lastFrameTimeMs = timeStamp;
-
-  let numUpdateSteps = 0;
-  while (delta >= timeStamp) {
-    update(timeStamp);
-    delta -= timeStamp;
-    if (++numUpdateSteps >= 240) {
-      panic(); // fix things
-      break; // bail out
-  }
-}
-
-  movePlayer(delta);
-
-  requestAnimationFrame(gameLoop)
-
-}
-
-
-window.requestAnimationFrame(gameLoop)
-
-
+    
+   window.requestAnimationFrame(gameLoop)
+    
 
 
