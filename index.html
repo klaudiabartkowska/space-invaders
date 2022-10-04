@@ -1,16 +1,43 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="style.css">
-  <title>Space Invaders</title>
-</head>
-<body >
-  <div id="container">
-      <img src="./img/pngwing.com.jpg" alt="" id="spaceship">
-  </div>
-  <script src="/main.js"></script>
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
+    <title>SPACE INVADERS</title>
+  </head>
+  <body>
+    <h1>SPACE INVADERS</h1>
+    <div class="scoreboard">
+      <div class="time">
+        <p>Time:</p>
+        <pre id="t1">0m:0s</pre>
+      </div>
+      <div class="score">
+        <pre id="t1"></pre>
+        <p>Score:</p>
+        <pre id="score">0</pre>
+      </div>
+      <div class="lives">
+        <p>Lives:</p>
+        <pre id="t1"></pre>
+        <img class="heart" src="./img/heart.jpg" alt="heart" style="width: 40px; height: 40x;">
+        <img class="heart" src="./img/heart.jpg" alt="heart" style="width: 40px; height: 40px;">
+        <img class="heart" src="./img/heart.jpg" alt="heart" style="width: 40px; height: 40px;">
+      </div>
+    </div>
+    <div id="container">
+      <div class="enemy">
+        <!-- <img src="./img/1.png" alt="enemy" style="width:100px; height:100px" id="alien"> -->
+        <img src="./img/fly.png" alt="enemy" style="width:70px; height:70px" id="alien"> <br><br><br><br><br>
+        <img src="./img/fly.png" alt="enemy" style="width:70px; height:70px" id="alien"> <br><br><br><br><br>
+
+        <!-- <img src="./img/3.png" alt="enemy" style="width:100px; height:100px" id="alien"> -->
+
+      </div>
+      <img src="./img/spaceship.jpg" alt="" id="spaceship" />
+    </div>
+    <script src="/main.js"></script>
+  </body>
 </html>

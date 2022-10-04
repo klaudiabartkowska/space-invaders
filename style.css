@@ -1,10 +1,55 @@
+@import url('https://fonts.googleapis.com/css2?family=Gemunu+Libre:wght@200;300&family=Poppins:ital,wght@0,300;0,400;1,200&family=Roboto:ital,wght@1,100&family=Silkscreen&display=swap');
+
+
 * {
   padding: 0;
   margin: 0;
 } 
 
 body{
-  background-color: black;
+  background: url(./img/stars.png) repeat 0 0;
+  animation: animate 80s infinite;
+  animation-timing-function: linear;
+}
+/* 
+@keyframes animate{
+  100% {
+    background-position: 1000px 1200px;
+  }
+
+} */
+
+h1{
+  color: white;
+  text-align: center;
+  margin-top: 0.5em;
+  font-family: 'Gemunu Libre', sans-serif;
+  font-size: 90px;
+  letter-spacing: 8px;
+}
+
+.scoreboard {
+  color: white;
+  position: relative;
+  display: flex;
+  justify-content: space-around;
+  text-align:left;
+  margin: 40px;
+  font-size: 30px;
+  letter-spacing: 5px;
+  font-family: 'Gemunu Libre', sans-serif;
+}
+
+
+
+.time .score .lives {
+  display: flex;
+}
+
+.lives {
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
 }
 
 #container {
@@ -17,20 +62,17 @@ body{
 }
 
 
-#spaceship{
+#alien {
   position: absolute;
-  top: 700px;
-  width: 150px;
-  height: 150px;
-} 
+  margin: 10rem;
 
-video {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
 
 }
 
+
+#spaceship{
+  position: absolute;
+  top: 800px;
+  width: 150px;
+  height: 150px;
+} 
