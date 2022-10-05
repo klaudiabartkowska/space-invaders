@@ -11,15 +11,15 @@ body{
   animation: animate 80s infinite;
   animation-timing-function: linear;
 }
-
-/* @keyframes animate{
+/* 
+ @keyframes animate{
   100% {
     background-position: 1000px 1200px;
   }
 
 }  */
 
-h1{
+h1{ 
   color: white;
   text-align: center;
   margin-top: 0.5em;
@@ -65,11 +65,9 @@ h1{
   height: 100%;
 }
 
-
-#alien {
-  position: absolute;
-  margin: 10rem;
-}
+/* .alien img {
+  position:absolute;
+} */
 
 
 #spaceship{
@@ -77,5 +75,13 @@ h1{
   top: 500px;
   width: 100px;
   height: 100px;
-  filter: drop-shadow(0.4rem 0.4rem 1rem rgba(27, 105, 27, 0.8));
+  filter: drop-shadow(0.3rem 0.3rem 0.8rem rgba(52, 83, 59, 0.8));
+  bottom: 0;
 } 
+
+
+#laser{
+  position: absolute;
+  width: 25px;
+  height: 30px;
+}

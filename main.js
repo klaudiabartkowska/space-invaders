@@ -13,21 +13,34 @@ let middleOfSpaceShip = spaceship.getBoundingClientRect().width/2
 let limit = container.getBoundingClientRect().width *0.2
 
 
-
 let started = false
 let pause = false 
 let restart = false 
 
-//  console.log(margin)
 
-//let enemy = document.createElement('div')
+let aliens = document.getElementsByClassName('aliens')  // all the aliens
 
- let aliens = [1,2,3,4,5,6,7,8,9,10,
-              11,12,14,15,16,17,18,19,20,
-              21,22,23,24,25,26,27,28,29,30]
 
- //container.append(aliens)             
-     
+console.log(aliens);
+
+let aliensStartPosition = playArea - (675/2) 
+
+
+// console.log(aliens.getBoundingClientRect()) 
+
+for (let i = 0; i < aliens.length; i++){
+  aliens[i]= aliensStartPosition + 'px'
+}
+
+console.log(aliensStartPosition);
+
+// let middleAlien = aliens.length/2
+
+
+
+
+// console.log(middleAlien)
+
 //  console.log(container.getBoundingClientRect().width);
 //  console.log(spaceship.getBoundingClientRect().x);
 //  console.log(middleOfSpaceShip);
@@ -63,14 +76,40 @@ let restart = false
   }
 }
 
-function shootBullet(key){
-  console.log('space ');
+
+ function drawAllien(){
+
+ }
+
+
+function shoot(key){
+
+if(key == " "){
+  
   let bullet = document.createElement("IMG");
-  console.log(bullet);
+   
+  bullet.src = "./img/laser.png"
+  
+  bullet.setAttribute("id","laser")
+  
+  container.appendChild(bullet);
+
+  const speed = 5;
+  const delay = 7;
+  const damage = 1;
+  const bulletY = spaceship.getBoundingClientRect().y;
+  const bulletX = spaceship.getBoundingClientRect().x + middleOfSpaceShip
+
+
+ bullet.style.left = (bulletX) + 'px'
+
+  console.log('bullet',bullet.getBoundingClientRect()) 
+  console.log('spaceship:',spaceship.getBoundingClientRect())
+
 
 }
 
- 
+} 
 
   document.addEventListener('keydown', e =>{
     switch(e.key){
@@ -81,7 +120,7 @@ function shootBullet(key){
       case 'r':
         restart = true;
       case " ":
-       shootBullet(e.key);
+       shoot(e.key);
       case 'ArrowLeft':
         movePlayer(e.key)
         break;
@@ -93,7 +132,8 @@ function shootBullet(key){
 
   
     function gameLoop(){
-    // shootBullet();
+    drawAllien()
+    shoot();
 
     requestAnimationFrame(gameLoop)
   }
