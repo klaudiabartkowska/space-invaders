@@ -88,7 +88,7 @@ if(key == " "){
   
   let bullet = document.createElement("IMG");
    
-  bullet.src = "./img/laser.png"
+  bullet.src = "./img/bullet.png"
   
   bullet.setAttribute("id","laser")
   
