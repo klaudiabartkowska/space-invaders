@@ -74,7 +74,7 @@ h1{
 
 #spaceship{
   position: absolute;
-  top: 500px;
+  /* top: 500px; */
   width: 100px;
   height: 100px;
   filter: drop-shadow(0.3rem 0.3rem 0.8rem rgba(52, 83, 59, 0.8));
