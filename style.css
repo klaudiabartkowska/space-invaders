@@ -59,7 +59,7 @@ h1{
 } */
 
 #container {
-  position: relative;
+  position: relative ;
   margin: auto;
   width: 800px;
   height: 600px;
@@ -69,12 +69,14 @@ h1{
 
 #enemy {
   position:absolute;
+  display: block;
+  opacity: 1;
+  width: 440px;
+  height: 88px;
 }
-
 
 #spaceship{
   position: absolute;
-  /* top: 500px; */
   width: 100px;
   height: 100px;
   filter: drop-shadow(0.3rem 0.3rem 0.8rem rgba(52, 83, 59, 0.8));
@@ -86,4 +88,23 @@ h1{
   position: absolute;
   width: 25px;
   height: 30px;
+}
+
+.aliens {
+  /* position: fixed; */
+  width: 40px;
+  height: 40px;
+  /* margin: 1em; */
+  display: inline-block;
+
+}
+
+
+.dead {
+  opacity: 0;
+  z-index: -100;
+  /* position:absolute; */
+  display: inline-block;
+  width: 40px;
+  height: 40px;
 }
