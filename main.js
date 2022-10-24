@@ -98,7 +98,7 @@ function animateEnemy() {
       enemy.style.transform = `translate(${position}px, ${curentY}px)`;
   } else{
       if (direction === true){
-      curentY += 80;
+      curentY += 40;
       // console.log("curentY", curentY);
       enemy.style.transform = `translate(${position}px, ${curentY}px)`;
       direction = false;
@@ -106,19 +106,13 @@ function animateEnemy() {
     position -= 8;
     enemy.style.transform = `translate(${position}px, ${curentY}px)`;
     if (position < 4) {
-      curentY += 80;
+      curentY += 40;
       enemy.style.transform = `translate(${position}px, ${curentY}px)`;
       direction = true;
     }
   }
   if (enemy.getBoundingClientRect().bottom >= spaceship.getBoundingClientRect().top){
-    // let lives = document.getElementsByClassName('lives')
-    // for(i = 0; i < lives.length; i++){
-    //   if(lives[i].childNodes === 'heart1'){
-    //     lives.splice(i,4)
-    //     i--;
-  
-    gameOver = true;
+     gameOver = true;
   }
 }
 
