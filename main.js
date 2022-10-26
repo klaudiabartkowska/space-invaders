@@ -3,13 +3,27 @@
 let container = document.getElementById("container");
 let playArea = container.getBoundingClientRect().width / 2;
 let instruction = document.getElementById('instruction')
+let scoreboard = document.getElementById('scoreboard')
+let boundary = document.getElementById('container').getBoundingClientRect()
 
 
+// Character select
+let characters =["dragon", "spaceship"]
+let character 
+let charSelectScreen =document.getElementById("characterSelect")
+let dragonCharacter = document.getElementById("splitLeft")
+let spaceshipCharacter = document.getElementById("splitRight")
+let dragon = document.getElementById('dragon')
 
+// character sprites
+playerIdleImgPos = 191 //x size value for a single sprite image
+playerIdleImgPosy = 161 // y value for a single sprite image
+playerIdleImgPosyLeft = 483 //last y value for single sprite image
+counter =0
 
 //      SPACESHIP 
 let spaceship = document.getElementById("spaceship");
-const spaceshipVelocity = 15; // it's an int
+const spaceshipVelocity = 12; // it's an int
 let spaceshipDiv = document.querySelector(".spaceshipDiv");
 container.append(spaceshipDiv);
 let middleOfSpaceShip = spaceship.getBoundingClientRect().width / 2;
@@ -18,31 +32,40 @@ let middleOfSpaceShip = spaceship.getBoundingClientRect().width / 2;
 
 let bulletStart = spaceship.getBoundingClientRect().height + 45;
 let bulletVelocity = bulletStart;
+// let bulletVelocity =15
 let shootPressed = false;
 
 
 //    KEYS
 let started = false;
-// let pause = false;
-let restart = false;
+let charChosen =false
+
 let move = {left:  0,
-            right: 0, 
+  right: 0, 
             shoot: 0 };
-let key;
+            let key;
+            
+            let gameOver = false;
+            let won = false
+            
+            
+            // SCORE  
+            let score = 0;
+            
+            // TIMER 
+            let time = new Date().getTime()
+            let seconds = 0;
+            let minutes = 0;
+            let clock = document.getElementById('timer');
+            
 
-let gameOver = false;
-
-
-// SCORE  
-let score = 0;
-
-// TIMER 
-let time = new Date().getTime()
-    let seconds = 0;
-    let minutes = 0;
-let clock = document.getElementById('timer');
-
-
+//~~~~~~~~~~~~~Sounds variables start~~~~~~~~~
+var piuPiu = new Audio("sounds/piu.ogg");
+var deadAngel = new Audio("sounds/deadAngel.ogg")
+var endGame = new Audio("sounds/gameOver.ogg");
+var haveWon = new Audio("sounds/haveWon.ogg");
+var distantUFO = new Audio("sounds/distantUfoLights.ogg");
+//~~~~~~~~~~~~~~Sounds variables end~~~~~~~~~~~~
 
 let destroyed = false; 
 
@@ -57,43 +80,64 @@ let direction = true;
 let curentY = 0;
 let canFire = true;
 
-
 window.addEventListener("load", () => {
   spaceship.style.position = "absolute";
   spaceship.style.left = playArea - middleOfSpaceShip + "px"; // center the Spaceship
 });
 
+let spaceshipStart = boundary.width/2 - spaceship.getBoundingClientRect().width
 
 
 //      KEYDOWN
-
-
 document.addEventListener("keydown", (e) => {
+  console.log(key)
   key = e.key;
-  if (key === "Enter") {
-    started = true;
-    console.log(started);
-  } else if (key === "p") {
-    if(started){
+  if(won){
+    if (key === "r") {
+      started = true;
+      window.location.reload(true)
+    }
+  }
+  if(key =='a'){
+    character =characters[0]
+    spaceship=dragon
+    spaceship.style.left = playArea - middleOfSpaceShip + "px"; // center the Spaceship
+    charSelectScreen.remove()
+    instruction.style.opacity=1
+    charChosen =true
+  }
+  if(key =='d'){
+    character=characters[1]
+    charSelectScreen.remove()
+    instruction.style.opacity=1
+    charChosen=true
+  }
+  if(!won && charChosen){
+    if (key === "Enter") {
+      started = true;
+      playDistantUFO()
+    } else if (key === "p") {
+      if(started){
       instruction.style.opacity = 1;
       spaceship.style.opacity = 0;
       enemy.style.opacity = 0;
       cancelAnimationFrame(gameLoop)
       started=false
+      playDistantUFO()
     } 
   } else if (key === "r") {
-    document.location.reload()
-    restart = true;
+    started = true;
+    window.location.reload(true)
+    // document.location.reload()
   } else if (key === "ArrowLeft") {
     move.left = 1;
-    movePlayer();
   } else if (key === "ArrowRight") {
     move.right = 1;
-    movePlayer();
   } else if (key === " ") {
     move.shoot = 1;
-    shoot();
+    // shoot();
   }
+}
 });
 
 
@@ -101,7 +145,7 @@ document.addEventListener("keydown", (e) => {
 
 document.addEventListener("keyup", (e) => {
   key = e.key;
-
+  
   if (key === "ArrowLeft") {
     move.left = 0;
   } else if (key === "ArrowRight") {
@@ -118,6 +162,14 @@ if (started){
   enemy.style.opacity = 1;
 }
 
+function playDistantUFO(){
+  if(started){
+    distantUFO.currentTime = 0;
+    distantUFO.play();
+  }else{
+    distantUFO.pause()
+  }
+}
 
 
 //      TIMER 
@@ -165,21 +217,21 @@ else if(seconds >10){
 //      MOVE ENEMY 
 
 function animateEnemy() {
-  position += 4;
+  position += 5;
 
   if (enemy.getBoundingClientRect().right < container.getBoundingClientRect().right && direction) {
       enemy.style.transform = `translate(${position}px, ${curentY}px)`;
   } else{
       if (direction === true){
-      curentY += 80;
+      curentY += 60;
       // console.log("curentY", curentY);
       enemy.style.transform = `translate(${position}px, ${curentY}px)`;
       direction = false;
     }
-    position -= 8;
+    position -= 10;
     enemy.style.transform = `translate(${position}px, ${curentY}px)`;
     if (position < 4) {
-      curentY += 80;
+      curentY += 60;
        
       enemy.style.transform = `translate(${position}px, ${curentY}px)`;
       direction = true;
@@ -187,46 +239,101 @@ function animateEnemy() {
   }
   if (enemy.getBoundingClientRect().bottom >= spaceship.getBoundingClientRect().top){
     let hearts = Array.from(document.getElementsByClassName('heart'))
-    console.log(hearts.length);
-    if(hearts == null || hearts.length ==0 ){
-      spaceship.style.opacity=0;
-      enemy.style.opacity=0;
+    // console.log(hearts.length);
+    
+    if(hearts == null || hearts.length ==1 ){
+
+      gameOver = true;
+      hearts[Array.length-1].remove()
+      spaceship.style.opacity= 0;
+      enemy.style.opacity= 0;
       let gameover = document.getElementById('gameover')
       let finalScore = document.getElementById('finalscore')
       finalScore.innerHTML = `Final score: ${score}`
       gameover.style.opacity = 1; 
-      gameOver = true;
+      distantUFO.pause()
+      endGame.currentTime = 0;
+      endGame.play();
       cancelAnimationFrame(gameLoop) 
       bullet.remove()
       for(let i=0; i<1; i++){
         console.log({gameOver})
       }
     }
-    position =0
-    curentY =0
 
-   setTimeout(function(){
-    if(hearts.length >0){
+    position =0
+    curentY =0  
+      
+    if(hearts.length > 0){
       hearts[Array.length-1].remove()
+      deadAngel.currentTime = 0;
+      deadAngel.play();
    }
-    },2500)
+    }
   }
-}
 
 
 
 //      MOVE SPACESHIP
 
 function movePlayer(){
+  console.log(spaceship.style.left)
+
+  let canAnimate = false
+  let movingLeft =false
+  let movingRight = false
+
+  if (counter >=1.75){
+    counter = 0
+    canAnimate = true
+  }
+
   if (move.left === 1){
+    movingLeft = true
     if (spaceship.getBoundingClientRect().left >container.getBoundingClientRect().left){
+      spaceshipStart -= spaceshipVelocity
       spaceship.style.left = parseInt(spaceship.style.left) - spaceshipVelocity + "px";
+
+      if(canAnimate){
+        console.log("hello")
+           dragon.style.backgroundPosition = `-${playerIdleImgPos}px -${playerIdleImgPosyLeft }px`
+   
+       if(playerIdleImgPos <573){
+           playerIdleImgPos = playerIdleImgPos +191
+       } else{
+           playerIdleImgPos =191
+       }
+
+    }
     }
   }
   if (move.right === 1) {
+    movingRight =true
     if (spaceship.getBoundingClientRect().right < container.getBoundingClientRect().right) {
+      spaceshipStart += spaceshipVelocity
       spaceship.style.left = parseInt(spaceship.style.left) + spaceshipVelocity + "px";
+      if (canAnimate){
+                  
+        dragon.style.backgroundPosition = `-${playerIdleImgPos}px -${playerIdleImgPosy}px` //gets dragon image and assigns x & y positions on sprite sheet 
+   
+       if(playerIdleImgPos <573){ //checks if past max width of sprite sheet and either shows next image or resets
+           playerIdleImgPos = playerIdleImgPos +191
+       } else{
+           playerIdleImgPos =191
+       }
+        
+    
     }
+    }
+  }
+  if(counter ==1 && !movingLeft && !movingRight) {
+    dragon.style.backgroundPosition = `-${playerIdleImgPos}px 0px`
+    
+        if(playerIdleImgPos <573){
+            playerIdleImgPos = playerIdleImgPos +191
+        } else{
+            playerIdleImgPos =191
+        }
   }
 }
 
@@ -234,21 +341,30 @@ function movePlayer(){
 //    SHOOT BULLET 
 
 function shoot() {
-  if(move.shoot && canFire){
+  // console.log(move.shoot, canFire, started)
+  if(move.shoot && canFire && started){
     canFire = false;
     shootPressed = true;
-
+    
     let bullet = document.createElement("IMG");
-    bullet.src = "./img/bullet.png";
+    bullet.src = "./resources/img/bullet.png";
     bullet.setAttribute("id", "laser");
     const body = document.querySelector("body");
-    body.append(bullet);
-
-    const bulletY = spaceship.getBoundingClientRect().top-13 + "px";
-    const bulletX =(spaceship.getBoundingClientRect().right + spaceship.getBoundingClientRect().left)/2-13 +"px";
-
+    // body.append(bullet);
+    console.log({bulletStart}, {bulletVelocity})
+    
+    bullet.style.marginLeft=(spaceshipStart +(spaceship.getBoundingClientRect().width *0.75))+"px"
     bullet.style.bottom = bulletStart + "px";
-    bullet.style.left = bulletX;
+    container.appendChild(bullet)
+    piuPiu.currentTime = 0;
+    piuPiu.play();
+    console.log(bullet.style.bottom)
+    
+    // const bulletY = spaceship.getBoundingClientRect().top-13 + "px";
+    // const bulletX =(spaceship.getBoundingClientRect().right + spaceship.getBoundingClientRect().left)/2-13 +"px";
+
+    // bullet.style.bottom = bulletStart + "px";
+    // bullet.style.left = bulletX;
   }
 
   let bullet = document.getElementById("laser");
@@ -273,21 +389,23 @@ function collisionDetection(){
   let aliens = Array.from(document.querySelectorAll(".aliens")); 
   // aliens[i].getBoundingClientRect().x   // getBoundingClient works for each element of the array 
 
-  if (bullet != null){
-
-
   if(aliens.every(alien =>{
     !aliens.includes('aliens')
-  })){
-    let win =document.getElementById('winner')
-    win.style.opacity =1
+  })){  
     spaceship.style.opacity=0
+    won = true
+    distantUFO.pause()
+    let win = document.getElementById('winner')
+    win.style.opacity =1
+    haveWon.currentTime = 0;
+    haveWon.play();
     let finalScore = document.getElementById('finalscore2')
     finalScore.innerHTML = `Final score: ${score}`
     cancelAnimationFrame(gameLoop)
-    started= false      
+    started= false
     bullet.remove()   
   }
+  if (bullet != null){
 
   for(i = 0; i < aliens.length; i++){
    // horizontal check ---  (alien.x < bullet.x + bullet.y  && alien.x + alien.width > bullet.x)
@@ -314,11 +432,13 @@ function collisionDetection(){
 //      GAME LOOP 
   
 function gameLoop() {
+  counter +=0.25
   if (started === true) {
     if (started){
       spaceship.style.opacity = 1;
       enemy.style.opacity = 1;
       instruction.style.opacity = 0;
+      scoreboard.style.opacity =1
     }
   if (gameOver === false) {
     timer()
