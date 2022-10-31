@@ -19,45 +19,43 @@ let dragon = document.getElementById('dragon')
 playerIdleImgPos = 191 //x size value for a single sprite image
 playerIdleImgPosy = 161 // y value for a single sprite image
 playerIdleImgPosyLeft = 483 //last y value for single sprite image
-counter =0
+counter =0 //used to control animation speed
 
 //      SPACESHIP 
+const spaceshipVelocity = 12; // it's an int and refers to spaceships speed
 let spaceship = document.getElementById("spaceship");
-const spaceshipVelocity = 12; // it's an int
 let spaceshipDiv = document.querySelector(".spaceshipDiv");
-container.append(spaceshipDiv);
 let middleOfSpaceShip = spaceship.getBoundingClientRect().width / 2;
+container.append(spaceshipDiv);
 
 //     BULLET
-
-let bulletStart = spaceship.getBoundingClientRect().height + 45;
+let bulletStart = spaceship.getBoundingClientRect().height + 45; //starting position of bullet(y axis)
 let bulletVelocity = bulletStart;
 // let bulletVelocity =15
-let shootPressed = false;
+let shootPressed = false; //used to control firing
 
 
 //    KEYS
-let started = false;
+let started = false; //game started
 let charChosen =false
 
+//used to allow multiple input keys (move and shoot)
 let move = {left:  0,
-  right: 0, 
+            right: 0, 
             shoot: 0 };
-            let key;
+    let key; //inits key values
             
-            let gameOver = false;
-            let won = false
-            
-            
-            // SCORE  
-            let score = 0;
-            
-            // TIMER 
-            let time = new Date().getTime()
-            let seconds = 0;
-            let minutes = 0;
-            let clock = document.getElementById('timer');
-            
+// SCORE  
+let score = 0;
+    
+// TIMER 
+    let time = new Date().getTime()
+    let seconds = 0;
+    let minutes = 0;
+    let clock = document.getElementById('timer');
+    
+    let gameOver = false;
+    let won = false
 
 //~~~~~~~~~~~~~Sounds variables start~~~~~~~~~
 var piuPiu = new Audio("sounds/piu.ogg");
@@ -90,7 +88,7 @@ let spaceshipStart = boundary.width/2 - spaceship.getBoundingClientRect().width
 
 //      KEYDOWN
 document.addEventListener("keydown", (e) => {
-  console.log(key)
+  // console.log(key)
   key = e.key;
   if(won){
     if (key === "r") {
@@ -257,7 +255,7 @@ function animateEnemy() {
       cancelAnimationFrame(gameLoop) 
       bullet.remove()
       for(let i=0; i<1; i++){
-        console.log({gameOver})
+        // console.log({gameOver})
       }
     }
 
@@ -277,7 +275,7 @@ function animateEnemy() {
 //      MOVE SPACESHIP
 
 function movePlayer(){
-  console.log(spaceship.style.left)
+  // console.log(spaceship.style.left)
 
   let canAnimate = false
   let movingLeft =false
@@ -295,7 +293,7 @@ function movePlayer(){
       spaceship.style.left = parseInt(spaceship.style.left) - spaceshipVelocity + "px";
 
       if(canAnimate){
-        console.log("hello")
+        // console.log("hello")
            dragon.style.backgroundPosition = `-${playerIdleImgPos}px -${playerIdleImgPosyLeft }px`
    
        if(playerIdleImgPos <573){
@@ -351,14 +349,14 @@ function shoot() {
     bullet.setAttribute("id", "laser");
     const body = document.querySelector("body");
     // body.append(bullet);
-    console.log({bulletStart}, {bulletVelocity})
+    // console.log({bulletStart}, {bulletVelocity})
     
     bullet.style.marginLeft=(spaceshipStart +(spaceship.getBoundingClientRect().width *0.75))+"px"
     bullet.style.bottom = bulletStart + "px";
     container.appendChild(bullet)
     piuPiu.currentTime = 0;
     piuPiu.play();
-    console.log(bullet.style.bottom)
+    // console.log(bullet.style.bottom)
     
     // const bulletY = spaceship.getBoundingClientRect().top-13 + "px";
     // const bulletX =(spaceship.getBoundingClientRect().right + spaceship.getBoundingClientRect().left)/2-13 +"px";
